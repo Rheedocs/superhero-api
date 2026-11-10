@@ -1,0 +1,348 @@
+{
+  "info": {
+    "_postman_id": "1f4bcd37-69a3-4022-b51b-c77cb403a295",
+    "name": "SuperHero API",
+    "description": "10 requests i rækkefølge. Kør dem samlet i Runner, da favoritterne bygger på hinanden og ligger i hukommelsen. Genstart serveren, hvis du vil køre igen.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58677528",
+    "_collection_link": "https://go.postman.co/collection/58677528-1f4bcd37-69a3-4022-b51b-c77cb403a295?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET alle helte (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er GET', function () { pm.expect(pm.request.method).to.eql('GET'); });",
+              "pm.test('Status er 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Array med mindst et element', function () { const d = pm.response.json(); pm.expect(d).to.be.an('array'); pm.expect(d.length).to.be.above(0); });",
+              "pm.test('Foerste helt har de rigtige felter', function () { pm.expect(pm.response.json()[0]).to.include.all.keys('id', 'name', 'fullName', 'strength', 'image'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/superheroes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "superheroes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET en helt (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er GET', function () { pm.expect(pm.request.method).to.eql('GET'); });",
+              "pm.test('Status er 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Id er 1', function () { pm.expect(pm.response.json().id).to.eql(1); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/superheroes/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "superheroes",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET ukendt helt (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er GET', function () { pm.expect(pm.request.method).to.eql('GET'); });",
+              "pm.test('Status er 404', function () { pm.response.to.have.status(404); });",
+              "pm.test('Svaret har error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/superheroes/999999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "superheroes",
+            "999999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST favorit (201)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er POST', function () { pm.expect(pm.request.method).to.eql('POST'); });",
+              "pm.test('Status er 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Svaret har id 1 og noten', function () { const d = pm.response.json(); pm.expect(d.id).to.eql(1); pm.expect(d.note).to.eql('Min yndlingshelt!'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1,\n  \"note\": \"Min yndlingshelt!\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/favorites",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST uden note (400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er POST', function () { pm.expect(pm.request.method).to.eql('POST'); });",
+              "pm.test('Status er 400', function () { pm.response.to.have.status(400); });",
+              "pm.test('Svaret har error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/favorites",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST ukendt helt (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er POST', function () { pm.expect(pm.request.method).to.eql('POST'); });",
+              "pm.test('Status er 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 999999,\n  \"note\": \"Test note\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/favorites",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET favoritter efter oprettelse (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er GET', function () { pm.expect(pm.request.method).to.eql('GET'); });",
+              "pm.test('Status er 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Array med favorit 1 og noten', function () { const d = pm.response.json(); pm.expect(d).to.be.an('array'); const f = d.find(x => x.id === 1); pm.expect(f).to.exist; pm.expect(f.note).to.eql('Min yndlingshelt!'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/favorites",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE favorit (204)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er DELETE', function () { pm.expect(pm.request.method).to.eql('DELETE'); });",
+              "pm.test('Status er 204', function () { pm.response.to.have.status(204); });",
+              "pm.test('Body er tom', function () { pm.expect(pm.response.text()).to.eql(''); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/favorites/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE igen (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er DELETE', function () { pm.expect(pm.request.method).to.eql('DELETE'); });",
+              "pm.test('Status er 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/favorites/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET favoritter efter sletning (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Metode er GET', function () { pm.expect(pm.request.method).to.eql('GET'); });",
+              "pm.test('Status er 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Favorit 1 er væk', function () { const d = pm.response.json(); pm.expect(d.find(x => x.id === 1)).to.be.undefined; });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/favorites",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "favorites"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
